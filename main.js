@@ -4,6 +4,9 @@ const path = require('path');
 
 const {app, BrowserWindow, Menu, MenuItem, ipcMain} = electron;
 
+mainWindow = null;
+
+// Add feed menu
 function createAddFeed() {
 
     const windowOptions = {
@@ -20,6 +23,13 @@ function createAddFeed() {
     addFeedWindow.on('closed', () => {
         addFeedWindow = null;
     });   
+
+    // Add feed item
+    ipcMain.on('item:add', function(e, feedItem){
+        mainWindow.webContents.send('item:add', feedItem);
+        console.log(feedItem);
+        addFeedWindow.close();
+    });
 }
 
 function initialize () {
@@ -35,8 +45,8 @@ function initialize () {
 			win.webContents.on('context-menu', (e, params) => {
 				menu.popup(win, params.x, params.y)
 			})
-		});
-
+        });
+        
 		ipcMain.on('show-context-menu', (event) => {
 			const win = BrowserWindow.fromWebContents(event.sender)
 			menu.popup(win)
