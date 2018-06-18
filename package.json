@@ -2,7 +2,7 @@
   "name": "rssfeeder",
   "version": "1.0.0",
   "description": "Simple RSS feeder",
-  "main": "index.js",
+  "main": "main.js",
   "scripts": {
     "start": "electron ."
   },
@@ -11,7 +11,7 @@
     "url": "git+https://github.com/simonphommarath/rssfeeder.git"
   },
   "author": "Simon Phomamrath",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/simonphommarath/rssfeeder/issues"
   },
