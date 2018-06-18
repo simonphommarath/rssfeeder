@@ -62,7 +62,7 @@ function initialize () {
                     label:'Refresh feed'
                 },
                 {
-                    label:'Quit',
+                    label:'Quit (ctrl + q)',
                     // Check which platform is the app on (darwin = mac)
                     accelerator: process.platform == 'darwin' ? 'Command+Q' : 'Ctrl+Q',
                     click() {
@@ -75,6 +75,23 @@ function initialize () {
         // If mac, add empty object to the menu
         if(process.platform == 'darwin'){
             mainMenu.unshift({});
+        }
+
+        // If in dev mode
+        if(process.env.NODE_ENV !== 'production') {
+            mainMenu.push({
+                label: 'DevTools',
+                submenu: [{
+                    label: 'Toggle DevTools',
+                    accelerator: process.platform == 'darwin' ? 'Command+I' : 'Ctrl+I',
+                    click(item, focusedWindow) {
+                        focusedWindow.toggleDevTools();
+                    }
+                },
+                {
+                    role: 'reload'
+                }]
+            });
         }
 
         const menu = Menu.buildFromTemplate(mainMenu);
@@ -97,26 +114,25 @@ function initialize () {
             mainWindow = null;
             app.quit();
         })
-	}
+	};
     
     // When the app is ready
     app.on('ready', () => {
         createMainMenu();
         createContextMenu();
         createWindow();
-    })
+    });
 
     app.on('window-all-closed', () => {
         app.quit();
-    })
+    });
 
     app.on('activate', () => {
         if (mainWindow === null) {
 			createContextMenu();
             createWindow();
         }
-    })
+    });
 }
 
 initialize();
-
