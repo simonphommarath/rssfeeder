@@ -60,7 +60,10 @@ function initialize () {
                     }
                 },
                 {
-                    label:'Clear feed'
+                    label:'Clear feed',
+                    click() {
+                        mainWindow.webContents.send('item:clear');
+                    }
                 },
                 {
                     label:'Refresh feed'
