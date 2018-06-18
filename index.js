@@ -1,9 +1,25 @@
 const path = require('path');
-const {app, BrowserWindow} = require('electron');
-
-let mainWindow = null;
+const {app, BrowserWindow, Menu, MenuItem, ipcMain} = require('electron');
 
 function initialize () {
+
+	function createContextMenu() {
+
+		const menu = new Menu();
+
+		menu.append(new MenuItem({ label: 'Refresh' }));
+
+		app.on('browser-window-created', (event, win) => {
+			win.webContents.on('context-menu', (e, params) => {
+				menu.popup(win, params.x, params.y)
+			})
+		});
+
+		ipcMain.on('show-context-menu', (event) => {
+			const win = BrowserWindow.fromWebContents(event.sender)
+			menu.popup(win)
+		});
+	}
 
     function createWindow () {
 
@@ -19,9 +35,10 @@ function initialize () {
         mainWindow.on('closed', () => {
             mainWindow = null;
         })
-    }
-
+	}
+	
     app.on('ready', () => {
+		createContextMenu();
         createWindow();
     })
 
@@ -31,6 +48,7 @@ function initialize () {
 
     app.on('activate', () => {
         if (mainWindow === null) {
+			createContextMenu();
             createWindow();
         }
     })
