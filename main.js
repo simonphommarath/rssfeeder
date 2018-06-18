@@ -5,6 +5,7 @@ const path = require('path');
 const {app, BrowserWindow, Menu, MenuItem, ipcMain} = electron;
 
 mainWindow = null;
+addFeedWindow = null;
 
 // Add feed menu
 function createAddFeed() {
@@ -23,13 +24,6 @@ function createAddFeed() {
     addFeedWindow.on('closed', () => {
         addFeedWindow = null;
     });   
-
-    // Add feed item
-    ipcMain.on('item:add', function(e, feedItem){
-        mainWindow.webContents.send('item:add', feedItem);
-        console.log(feedItem);
-        addFeedWindow.close();
-    });
 }
 
 function initialize () {
@@ -144,5 +138,12 @@ function initialize () {
         }
     });
 }
+
+    // Add feed item
+    ipcMain.on('item:add', function(e, feedItem){
+        mainWindow.webContents.send('item:add', feedItem);
+        console.log(feedItem);
+        addFeedWindow.close();
+    });
 
 initialize();
