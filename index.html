@@ -4,17 +4,23 @@
     <title>RSS Feed</title>
 </head>
 <body>
+
+    <!--button>Click to fade in boxes</button><br><br>
+    <div id="div1" style="width:80px;height:80px;display:none;background-color:red;"></div><br-->
+
     <h1>
         My Feed
     </h1>
     <ul></ul>
+
+    <script>window.$ = window.jQuery = require('jquery');</script>
 
     <script>
         const electron = require('electron');
         const {ipcRenderer} = electron;
         const ul = document.querySelector('ul');
 
-        // catch item from addItemWindow
+        // Catch item from addItemWindow
         ipcRenderer.on('item:add', function(e, item) {
             const li = document.createElement('li');
             const itemText = document.createTextNode(item);
@@ -22,7 +28,7 @@
             ul.appendChild(li);
         });
 
-        // clear list
+        // Clear list
         ipcRenderer.on('item:clear', function(e, item) {
             ul.innerHTML = '';
         });
@@ -32,6 +38,12 @@
         function removeItem(e){
             e.target.remove();
         }
+
+        $(document).ready(function(){
+            $("button").click(function(){
+                $("#div1").fadeIn();
+            });
+        });
 
     </script>
 </body>

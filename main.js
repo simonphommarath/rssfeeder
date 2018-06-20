@@ -142,11 +142,28 @@ function initialize () {
     });
 }
 
-    // Add feed item
-    ipcMain.on('item:add', function(e, feedItem){
-        mainWindow.webContents.send('item:add', feedItem);
-        console.log(feedItem);
-        addFeedWindow.close();
+// Add feed item
+ipcMain.on('item:add', function(e, feedItem){
+    mainWindow.webContents.send('item:add', feedItem);
+    console.log(feedItem);
+    addFeedWindow.close();
+});
+
+/*
+function GetFeed() {
+    $.get('https://www.youtube.com/feeds/videos.xml?channel_id=UCfPhyExfcaqJBKc3HO3cNBw', function (data) {
+        $(data).find("entry").each(function () { // or "item" or whatever suits your feed
+            var el = $(this);
+    
+            console.log("------------------------");
+            console.log("title      : " + el.find("title").text());
+            console.log("author     : " + el.find("author").text());
+            console.log("description: " + el.find("description").text());
+        });
     });
+}
+
+GetFeed();
+*/
 
 initialize();
