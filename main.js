@@ -1,6 +1,7 @@
 const electron = require('electron');
 const url = require('url');
 const path = require('path');
+const Parser = require('rss-parser');
 
 const {app, BrowserWindow, Menu, MenuItem, ipcMain} = electron;
 
@@ -149,21 +150,22 @@ ipcMain.on('item:add', function(e, feedItem){
     addFeedWindow.close();
 });
 
-/*
+
 function GetFeed() {
-    $.get('https://www.youtube.com/feeds/videos.xml?channel_id=UCfPhyExfcaqJBKc3HO3cNBw', function (data) {
-        $(data).find("entry").each(function () { // or "item" or whatever suits your feed
-            var el = $(this);
     
-            console.log("------------------------");
-            console.log("title      : " + el.find("title").text());
-            console.log("author     : " + el.find("author").text());
-            console.log("description: " + el.find("description").text());
+    let parser = new Parser();
+
+    (async () => {
+        let feed = await parser.parseURL('http://feeds.feedburner.com/codinghorror?format=xml');
+        console.log(feed.title);
+       
+        feed.items.forEach(item => {
+          console.log(item.title + ':' + item.link)
         });
-    });
+    })();
+
 }
 
 GetFeed();
-*/
 
 initialize();

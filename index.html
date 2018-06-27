@@ -5,8 +5,8 @@
 </head>
 <body>
 
-    <!--button>Click to fade in boxes</button><br><br>
-    <div id="div1" style="width:80px;height:80px;display:none;background-color:red;"></div><br-->
+    <button>Click to fade in boxes</button><br><br>
+    <div id="div1" style="width:80px;height:80px;display:none;background-color:red;"></div><br>
 
     <h1>
         My Feed
@@ -16,6 +16,7 @@
     <script>window.$ = window.jQuery = require('jquery');</script>
 
     <script>
+        
         const electron = require('electron');
         const {ipcRenderer} = electron;
         const ul = document.querySelector('ul');
@@ -38,12 +39,6 @@
         function removeItem(e){
             e.target.remove();
         }
-
-        $(document).ready(function(){
-            $("button").click(function(){
-                $("#div1").fadeIn();
-            });
-        });
 
     </script>
 </body>
