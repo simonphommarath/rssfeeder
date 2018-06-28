@@ -1,7 +1,8 @@
 const electron = require('electron');
-const url = require('url');
+//const url = require('url');
 const path = require('path');
 const Parser = require('rss-parser');
+const fs = require('fs');
 
 const {app, BrowserWindow, Menu, MenuItem, ipcMain} = electron;
 
@@ -145,6 +146,7 @@ function initialize () {
 
 // Add feed item
 ipcMain.on('item:add', function(e, feedItem){
+    // save link in file
     mainWindow.webContents.send('item:add', feedItem);
     console.log(feedItem);
     addFeedWindow.close();
@@ -152,7 +154,6 @@ ipcMain.on('item:add', function(e, feedItem){
 
 
 function GetFeed() {
-    
     let parser = new Parser();
 
     (async () => {
@@ -163,9 +164,8 @@ function GetFeed() {
           console.log(item.title + ':' + item.link)
         });
     })();
-
 }
 
-GetFeed();
+//GetFeed();
 
 initialize();
