@@ -28,7 +28,25 @@ function createAddFeed() {
     });   
 }
 
+function checkFile() {
+    fs.access('link.txt', fs.constants.F_OK, (err) => {
+        if(err) {
+            console.log('Files does not exist, creating new file...');
+
+            fs.writeFile('link.txt', '', (err) => {
+                if (err) throw err;
+                console.log("The file was succesfully saved!");
+            }); 
+        }
+
+        // read file
+
+    });
+}
+
 function initialize () {
+
+    checkFile();
 
     // Create right-click menu
 	function createContextMenu() {
