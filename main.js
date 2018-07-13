@@ -3,11 +3,13 @@ const electron = require('electron');
 const path = require('path');
 const Parser = require('rss-parser');
 const fs = require('fs');
+const readline = require('readline');
 
 const {app, BrowserWindow, Menu, MenuItem, ipcMain} = electron;
 
 mainWindow = null;
 addFeedWindow = null;
+const file = 'link.txt';
 
 // Add feed menu
 function createAddFeed() {
@@ -28,8 +30,10 @@ function createAddFeed() {
     });   
 }
 
-function checkFile() {
+function readFile() {
+
     fs.access('link.txt', fs.constants.F_OK, (err) => {
+
         if(err) {
             console.log('Files does not exist, creating new file...');
 
@@ -37,16 +41,23 @@ function checkFile() {
                 if (err) throw err;
                 console.log("The file was succesfully saved!");
             }); 
+            
+        } else {
+            const rl = readline.createInterface({
+                input: fs.createReadStream(file)
+            });
+        
+            rl.on('line', function (line) {
+              console.log('Line from file:', line);
+            });
         }
-
-        // read file
 
     });
 }
 
 function initialize () {
 
-    checkFile();
+    readFile();
 
     // Create right-click menu
 	function createContextMenu() {
@@ -170,7 +181,6 @@ ipcMain.on('item:add', function(e, feedItem){
     addFeedWindow.close();
 });
 
-
 function GetFeed() {
     let parser = new Parser();
 
@@ -183,7 +193,5 @@ function GetFeed() {
         });
     })();
 }
-
-//GetFeed();
 
 initialize();
