@@ -40,6 +40,15 @@
             e.target.remove();
         }
 
+        
+        // Refresh item from refresh
+        ipcRenderer.on('item:refresh', function(e, item) {
+            const li = document.createElement('li');
+            const itemText = document.createTextNode(item);
+            li.appendChild(itemText);
+            ul.appendChild(li);
+        });
+
     </script>
 </body>
 </html>

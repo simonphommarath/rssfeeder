@@ -10,6 +10,8 @@ const {app, BrowserWindow, Menu, MenuItem, ipcMain} = electron;
 mainWindow = null;
 addFeedWindow = null;
 const file = 'link.txt';
+var links = [];
+var feeds = [];
 
 // Add feed menu
 function createAddFeed() {
@@ -30,6 +32,26 @@ function createAddFeed() {
     });   
 }
 
+function refreshFeed() {
+    feeds.forEach(item => {
+        //console.log(item.author + ' : ' + item.title + ' : ' + item.pubDate);
+        mainWindow.webContents.send('item:refresh', item.title);
+    });
+}
+
+function GetFeed(link) {
+
+    let parser = new Parser();
+
+    (async () => {
+        let feed = await parser.parseURL(link);   
+        feed.items.forEach(item => {
+          //console.log(item.author + ' : ' + item.title + ' : ' + item.pubDate);
+          feeds.push(item);
+        });
+    })(); 
+}
+
 function readFile() {
 
     fs.access('link.txt', fs.constants.F_OK, (err) => {
@@ -48,10 +70,11 @@ function readFile() {
             });
         
             rl.on('line', function (line) {
-              console.log('Line from file:', line);
+                console.log('Line from file:', line);
+                //links.push(line);
+                GetFeed(line);
             });
         }
-
     });
 }
 
@@ -97,7 +120,10 @@ function initialize () {
                     }
                 },
                 {
-                    label:'Refresh feed'
+                    label:'Refresh feed',
+                    click() {
+                        refreshFeed()
+                    }
                 },
                 {
                     label:'Quit (ctrl + q)',
@@ -180,18 +206,5 @@ ipcMain.on('item:add', function(e, feedItem){
     console.log(feedItem);
     addFeedWindow.close();
 });
-
-function GetFeed() {
-    let parser = new Parser();
-
-    (async () => {
-        let feed = await parser.parseURL('http://feeds.feedburner.com/codinghorror?format=xml');
-        console.log(feed.title);
-       
-        feed.items.forEach(item => {
-          console.log(item.title + ':' + item.link)
-        });
-    })();
-}
 
 initialize();
