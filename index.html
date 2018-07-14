@@ -2,6 +2,7 @@
 <html>
 <head>
     <title>RSS Feed</title>
+    <link rel="stylesheet" type="text/css" href="./style.css">
 </head>
 <body>
 
@@ -12,14 +13,19 @@
         My Feed
     </h1>
     <ul></ul>
-
-    <script>window.$ = window.jQuery = require('jquery');</script>
+    <div class='feedList'>
+        
+    </div>
 
     <script>
+        window.$ = window.jQuery = require('jquery');
+    </script>
 
+    <script>
         const electron = require('electron');
         const {ipcRenderer} = electron;
         const ul = document.querySelector('ul');
+        const FeedList = document.querySelector(".feedList");
 
         // Catch item from addItemWindow
         ipcRenderer.on('item:add', function(e, item) {
@@ -35,20 +41,27 @@
         });
 
         // Remove item
-        ul.addEventListener('dblclick', removeItem);
-        function removeItem(e){
+        ul.addEventListener('dblclick', function(e) {
             e.target.remove();
-        }
+        });
 
-        
-        // Refresh item from refresh
+        // Clean item from refresh
+        ipcRenderer.on('item:clean', function(e) {
+            while (FeedList.firstChild) {
+                FeedList.removeChild(FeedList.firstChild);
+            }
+        });
+
+        // Add item from refresh
         ipcRenderer.on('item:refresh', function(e, item) {
-            const li = document.createElement('li');
-            const itemText = document.createTextNode(item);
-            li.appendChild(itemText);
-            ul.appendChild(li);
+            const div = document.createElement('div');
+            div.classList.add("feedItem");
+            const itemText = document.createTextNode(item.title);
+            div.appendChild(itemText);
+            FeedList.appendChild(div);
         });
 
     </script>
+
 </body>
 </html>
