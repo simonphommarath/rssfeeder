@@ -2,6 +2,7 @@
 <html>
 <head>
     <title>RSS Feed</title>
+    <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="./style.css">
 </head>
 <body>
@@ -9,17 +10,20 @@
 <!--     <button>Click to fade in boxes</button><br><br>
     <div id="div1" style="width:80px;height:80px;display:none;background-color:red;"></div><br> -->
 
-    <h1>
-        My Feed
-    </h1>
-    <ul></ul>
-    <div class='feedList'>
-        
+
+    <div class='container'>
+        <h1>
+            My Feed
+        </h1>
+
+        <div class='feedList'>
+
+        </div>
+
+        <ul></ul>
     </div>
 
-    <script>
-        window.$ = window.jQuery = require('jquery');
-    </script>
+    <script>window.$ = window.jQuery = require('jquery');</script>
 
     <script>
         const electron = require('electron');
@@ -54,11 +58,27 @@
 
         // Add item from refresh
         ipcRenderer.on('item:refresh', function(e, item) {
-            const div = document.createElement('div');
-            div.classList.add("feedItem");
-            const itemText = document.createTextNode(item.title);
-            div.appendChild(itemText);
-            FeedList.appendChild(div);
+
+            var rowDiv = document.createElement('div');
+            rowDiv.classList.add("row", "border");
+
+            var rowCol1 = document.createElement('div');
+            rowCol1.classList.add("col-6");
+            rowCol1.appendChild(document.createTextNode(item.title));
+
+            var rowCol2 = document.createElement('div');
+            rowCol2.classList.add("col-2");
+            rowCol2.appendChild(document.createTextNode(item.author));
+
+            var rowCol3 = document.createElement('div');
+            rowCol3.classList.add("col-4");
+            rowCol3.appendChild(document.createTextNode(item.pubDate));
+
+            rowDiv.appendChild(rowCol1);
+            rowDiv.appendChild(rowCol2);
+            rowDiv.appendChild(rowCol3);
+
+            FeedList.appendChild(rowDiv);
         });
 
     </script>

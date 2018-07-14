@@ -32,10 +32,11 @@ function createAddFeed() {
     });   
 }
 
+
+
 function refreshFeed() {
     mainWindow.webContents.send('item:clean');
     feeds.forEach(item => {
-        //console.log(item.author + ' : ' + item.title + ' : ' + item.pubDate);
         mainWindow.webContents.send('item:refresh', item);
     });
 }
