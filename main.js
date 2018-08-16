@@ -19,7 +19,8 @@ function createAddFeed() {
     const windowOptions = {
         width: 300,
         height: 200,
-        title: 'Add Feed'
+        title: 'Add Feed',
+        resizable: false
     };
 
     addFeedWindow = new BrowserWindow(windowOptions);
@@ -170,7 +171,8 @@ function initialize () {
             width: 1080,
             minWidth: 680,
             height: 840,
-            title: app.getName()
+            title: app.getName(),
+            resizable: false
         }
 
         mainWindow = new BrowserWindow(windowOptions);
