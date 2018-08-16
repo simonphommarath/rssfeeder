@@ -33,10 +33,13 @@ function createAddFeed() {
     });   
 }
 
-
-
 function refreshFeed() {
     mainWindow.webContents.send('item:clean');
+
+    feeds.sort(function(a,b){
+        return new Date(b.pubDate) - new Date(a.pubDate);
+    });
+
     feeds.forEach(item => {
         mainWindow.webContents.send('item:refresh', item);
     });
@@ -50,6 +53,8 @@ function GetFeed(link) {
         let feed = await parser.parseURL(link);   
         feed.items.forEach(item => {
           //console.log(item.author + ' : ' + item.title + ' : ' + item.pubDate);
+          var date = new Date(item.pubDate);
+          item.pubDate = date.toLocaleString();
           feeds.push(item);
         });
     })(); 
@@ -73,7 +78,6 @@ function readFile() {
             });
         
             rl.on('line', function (line) {
-                console.log('Line from file:', line);
                 GetFeed(line);
             });
         }
@@ -169,7 +173,6 @@ function initialize () {
 
         const windowOptions = {
             width: 1080,
-            minWidth: 680,
             height: 840,
             title: app.getName(),
             resizable: false
@@ -206,7 +209,6 @@ function initialize () {
 ipcMain.on('item:add', function(e, feedItem){
     // save link in file
     mainWindow.webContents.send('item:add', feedItem);
-    console.log(feedItem);
     addFeedWindow.close();
 });
 

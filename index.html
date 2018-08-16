@@ -8,23 +8,35 @@
 
 <body>
 
-    <nav class="navbar navbar-toggleable-md navbar-inverse bg-inverse fixed-top">
-        <a class="navbar-brand" href="#">My Feed</a>
+    <nav class='navbar navbar-toggleable-md navbar-inverse bg-light fixed-top'>
+        <a class='navbar-brand' href='#'>My Feed</a>
     </nav>
 
     <div class='container'>
-        <div class='feedList'>
-        </div>
-        <ul></ul>
+
+        <table class='table'>
+            <thead>
+                <tr>
+                    <th style="width: 60%" scope='col'>Title</th>
+                    <th style="width: 20%" scope='col'>Author</th>
+                    <th style="width: 20%" scope='col'>Pub Date</th>
+                </tr>
+            </thead>
+            <tbody class='feedList'>
+            </tbody>
+        </table>
+
+        <ul class='linkList'></ul>
     </div>
 
     <!-- Javascript -->
     <script>window.$ = window.jQuery = require('jquery');</script>
 
     <script>
+
         const electron = require('electron');
         const {ipcRenderer} = electron;
-        const ul = document.querySelector('ul');
+        const ul = document.querySelector('.linkList');
         const FeedList = document.querySelector(".feedList");
 
         // Catch item from addItemWindow
@@ -55,26 +67,22 @@
         // Add item from refresh
         ipcRenderer.on('item:refresh', function(e, item) {
 
-            var rowDiv = document.createElement('div');
-            rowDiv.classList.add("row", "border");
+            var tableRow = document.createElement('tr');
 
-            var rowCol1 = document.createElement('div');
-            rowCol1.classList.add("col-6");
-            rowCol1.appendChild(document.createTextNode(item.title));
+            var tableCol1 = document.createElement('td');
+            tableCol1.appendChild(document.createTextNode(item.title));
 
-            var rowCol2 = document.createElement('div');
-            rowCol2.classList.add("col-2");
-            rowCol2.appendChild(document.createTextNode(item.author));
+            var tableCol2 = document.createElement('td');
+            tableCol2.appendChild(document.createTextNode(item.author));
 
-            var rowCol3 = document.createElement('div');
-            rowCol3.classList.add("col-4");
-            rowCol3.appendChild(document.createTextNode(item.pubDate));
+            var tableCol3 = document.createElement('td');
+            tableCol3.appendChild(document.createTextNode(item.pubDate));
 
-            rowDiv.appendChild(rowCol1);
-            rowDiv.appendChild(rowCol2);
-            rowDiv.appendChild(rowCol3);
+            tableRow.appendChild(tableCol1);
+            tableRow.appendChild(tableCol2);
+            tableRow.appendChild(tableCol3);
 
-            FeedList.appendChild(rowDiv);
+            FeedList.appendChild(tableRow);
         });
 
     </script>
