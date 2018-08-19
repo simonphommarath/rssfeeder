@@ -33,6 +33,9 @@ function createAddFeed() {
 }
 
 function refreshFeed() {
+
+    readFile();
+
     mainWindow.webContents.send('item:clean');
 
     feeds.sort(function(a,b){
@@ -45,7 +48,6 @@ function refreshFeed() {
 }
 
 function GetFeed(link) {
-
     let parser = new Parser();
 
     (async () => {
@@ -60,7 +62,7 @@ function GetFeed(link) {
 }
 
 function readFile() {
-
+    var feeds = [];
     fs.access('link.txt', fs.constants.F_OK, (err) => {
 
         if(err) {
