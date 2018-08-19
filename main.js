@@ -204,9 +204,12 @@ function initialize () {
     });
 }
 
-// Add feed item
+// Save feed link into file
 ipcMain.on('item:add', function(e, feedItem){
-    // save link in file
+    // add check if link is valid
+    fs.appendFile('link.txt', '\n'+feedItem, function (err) {
+        if (err) throw err;
+    });
     addFeedWindow.close();
 });
 
