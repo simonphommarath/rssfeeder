@@ -36,25 +36,11 @@
 
         const electron = require('electron');
         const {ipcRenderer} = electron;
-        const ul = document.querySelector('.linkList');
         const FeedList = document.querySelector(".feedList");
-
-        // Catch item from addItemWindow
-        ipcRenderer.on('item:add', function(e, item) {
-            const li = document.createElement('li');
-            const itemText = document.createTextNode(item);
-            li.appendChild(itemText);
-            ul.appendChild(li);
-        });
 
         // Clear list
         ipcRenderer.on('item:clear', function(e, item) {
-            ul.innerHTML = '';
-        });
-
-        // Remove item
-        ul.addEventListener('dblclick', function(e) {
-            e.target.remove();
+            FeedList.innerHTML = '';
         });
 
         // Clean item from refresh

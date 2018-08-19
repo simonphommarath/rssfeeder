@@ -10,7 +10,6 @@ const {app, BrowserWindow, Menu, MenuItem, ipcMain} = electron;
 mainWindow = null;
 addFeedWindow = null;
 const file = 'link.txt';
-var links = [];
 var feeds = [];
 
 // Add feed menu
@@ -18,7 +17,7 @@ function createAddFeed() {
 
     const windowOptions = {
         width: 300,
-        height: 200,
+        height: 125,
         title: 'Add Feed',
         resizable: false
     };
@@ -208,7 +207,6 @@ function initialize () {
 // Add feed item
 ipcMain.on('item:add', function(e, feedItem){
     // save link in file
-    mainWindow.webContents.send('item:add', feedItem);
     addFeedWindow.close();
 });
 
